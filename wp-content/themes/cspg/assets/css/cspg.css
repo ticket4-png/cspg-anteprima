@@ -534,6 +534,54 @@ nav.cspg-nav.wp-block-navigation .is-menu-open .wp-block-navigation__responsive-
 	border-radius: var(--wp--custom--radius--md);
 }
 
+/* foto nel testo delle pagine: angoli arrotondati, altezza contenuta, soggetto al centro */
+.cspg-figure {
+	margin-block: 1.5rem;
+}
+
+.cspg-content .cspg-figure img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-height: 26rem;
+	object-fit: cover;
+	object-position: center 40%;
+	border-radius: var(--wp--custom--radius--lg);
+}
+
+/* testo + foto affiancati (Home): la foto riempie la colonna, a telefono va sotto il testo */
+.cspg-split {
+	gap: clamp(1.5rem, 4vw, 3rem);
+	align-items: center;
+}
+
+.cspg-split .cspg-figure {
+	margin: 0;
+}
+
+.cspg-split .cspg-figure img,
+.cspg-content .cspg-split .cspg-figure img {
+	width: 100%;
+	max-height: none;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	border-radius: var(--wp--custom--radius--lg);
+}
+
+.cspg-split h2:first-child,
+.cspg-split .cspg-badge + h2 {
+	margin-top: 0.4rem;
+}
+
+.cspg-split h2:first-child {
+	margin-top: 0;
+}
+
+.cspg-card > .cspg-split {
+	max-width: none !important;
+	margin: 0 !important;
+}
+
 .cspg-content table {
 	width: 100%;
 	border-collapse: collapse;
@@ -697,20 +745,100 @@ nav.cspg-nav.wp-block-navigation .is-menu-open .wp-block-navigation__responsive-
 	padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-/* hero costruito con un blocco Copertina: il colore lo dà il tema */
+/* hero costruito con un blocco Copertina.
+   Senza foto: sfumato blu notte del tema (con monogramma). Con foto: la foto sta sotto il velo blu notte
+   (80%, impostato nel blocco: testo bianco e pulsanti restano leggibili, contrasto AA). */
 .wp-block-cover.cspg-hero {
 	min-height: 0;
+	align-items: center;
 	background: linear-gradient(135deg, #1e3a4c 0%, #1f6f9b 100%);
 }
 
-.wp-block-cover.cspg-hero > .wp-block-cover__background,
-.wp-block-cover.cspg-hero > .wp-block-cover__image-background {
+/* nessuna foto (es. scheda corso senza immagine in evidenza): il velo non serve */
+.wp-block-cover.cspg-hero:not(:has(.wp-block-cover__image-background)) > .wp-block-cover__background {
 	display: none;
 }
 
+/* il monogramma in filigrana si vede solo sullo sfumato, non sopra la foto */
+.wp-block-cover.cspg-hero:has(.wp-block-cover__image-background)::after {
+	display: none;
+}
+
+/* foto e velo riempiono la testata (la regola generale ".cspg-hero > *" li renderebbe "relative") */
+.wp-block-cover.cspg-hero > .wp-block-cover__image-background {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	margin: 0 !important;
+	object-fit: cover;
+	object-position: center;
+}
+
+.wp-block-cover.cspg-hero > .wp-block-cover__background {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	margin: 0 !important;
+}
+
 .wp-block-cover.cspg-hero > .wp-block-cover__inner-container {
+	position: relative;
+	z-index: 2;
 	width: 100%;
 	max-width: var(--wp--style--global--wide-size, 1160px);
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0;
+	text-align: left;
+}
+
+/* contenuto della testata con foto: allineato a sinistra, colonna di lettura stretta */
+.wp-block-cover.cspg-hero > .wp-block-cover__inner-container > :not(.alignfull):not(.cspg-hero__inner) {
+	max-width: 46rem;
+	margin-left: 0 !important;
+	margin-right: auto !important;
+}
+
+.wp-block-cover.cspg-hero > .wp-block-cover__inner-container > .wp-block-group:not(.alignfull):not(.cspg-hero__inner) {
+	margin-top: 2.25rem !important;
+	padding-top: 1.75rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.wp-block-cover.cspg-hero > .wp-block-cover__inner-container > .wp-block-group:not(.alignfull):not(.cspg-hero__inner) > * {
+	max-width: 46rem;
+	margin-left: 0 !important;
+	margin-right: auto !important;
+}
+
+/* scheda corso: la foto in evidenza è lo sfondo della testata (lo stesso blocco Copertina) */
+.wp-block-cover.cspg-hero--course > .wp-block-cover__inner-container > .cspg-hero__inner {
+	max-width: none;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.wp-block-cover.cspg-hero--course > .wp-block-cover__inner-container > .cspg-hero__inner > * {
+	max-width: 46rem;
+}
+
+/* telefono: testata più compatta, foto centrata sul soggetto */
+@media (max-width: 600px) {
+	.wp-block-cover.cspg-hero {
+		padding-top: 2.5rem;
+		padding-bottom: 2.5rem;
+	}
+
+	.wp-block-cover.cspg-hero > .wp-block-cover__inner-container > .wp-block-group:not(.alignfull):not(.cspg-hero__inner) {
+		margin-top: 1.5rem !important;
+		padding-top: 1.25rem;
+	}
 }
 
 /* occhiello (area del corso) */
@@ -1259,7 +1387,7 @@ p.cspg-placeholder,
 /* riquadro immagine: foto oppure segnaposto sfumato con monogramma */
 .cspg-card__media {
 	position: relative;
-	aspect-ratio: 16 / 9;
+	aspect-ratio: 16 / 10;
 	overflow: hidden;
 	background: linear-gradient(135deg, #1e3a4c 0%, #1f6f9b 100%);
 }
