@@ -582,6 +582,15 @@ nav.cspg-nav.wp-block-navigation .is-menu-open .wp-block-navigation__responsive-
 	margin: 0 !important;
 }
 
+/* colonne impilate (telefono e tablet verticale): foto più bassa, non alta quanto lo schermo */
+@media (max-width: 781px) {
+	/* !important: il blocco immagine scrive aspect-ratio 4/3 nello stile in linea */
+	.cspg-split .cspg-figure img,
+	.cspg-content .cspg-split .cspg-figure img {
+		aspect-ratio: 16 / 9 !important;
+	}
+}
+
 .cspg-content table {
 	width: 100%;
 	border-collapse: collapse;
@@ -1039,6 +1048,26 @@ p.cspg-badge.cspg-badge {
 		padding: 1.5rem 1rem;
 	}
 	.cspg-stats .cspg-stat:last-child {
+		border-bottom: 0;
+	}
+}
+
+/* tablet verticale: numeri su due colonne invece di una pila lunghissima */
+@media (min-width: 560px) and (max-width: 781px) {
+	.cspg-stats {
+		flex-wrap: wrap !important;
+	}
+	/* più specifico della regola del core che impila le colonne al 100% */
+	.wp-block-columns.cspg-stats:not(.is-not-stacked-on-mobile) > .wp-block-column.cspg-stat {
+		box-sizing: border-box;
+		flex-basis: 50% !important;
+		flex-grow: 0 !important;
+	}
+	.cspg-stats .cspg-stat:nth-child(odd) {
+		border-right: 1px solid rgba(255, 255, 255, 0.14);
+	}
+	.cspg-stats .cspg-stat:nth-last-child(-n + 2):nth-child(odd),
+	.cspg-stats .cspg-stat:nth-last-child(-n + 2):nth-child(odd) ~ .cspg-stat {
 		border-bottom: 0;
 	}
 }
